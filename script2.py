@@ -1,6 +1,7 @@
 #can take a directory and remove all the comments in every file in that directory
 from __future__ import print_function
-import sys, re, os
+import sys, re, os, time
+from datetime import datetime
 
 def replacer(match):
 	s = match.group(0)
@@ -19,7 +20,7 @@ def comment_remover(text):
 
 def NoComment(infile, outfile):
 	root, ext = os.path.splitext(infile) #I also googled this
-	valid = [".c", ".h"]
+	valid = [".c", ".h", "Makefile"]
 	if ext.lower() in valid:
 		inf = open(infile, "r")
 		dirty = inf.read()
@@ -39,9 +40,13 @@ if __name__ == "__main__": #I'm not 100% sure what this means but apparently thi
 		sys.exit()
 	root = sys.argv[1]
 	if os.path.exists(root): 
+		timeStamp =  datetime.fromtimestamp(time.time()).strftime("%m-%d-%y-%H:%M:%S")
+		newdir = root + "_" + timeStamp
+		os.makedirs(newdir)
 		for root, folders, fns in os.walk(root):
 			for fn in fns:
-				filePath = os.path.join(root, fn)
-				NoComment(filePath, filePath)
+				infile = os.path.join(root, fn)
+				outfile = os.path.join(newdir, fn)
+				NoComment(infile, outfile)
 	else:
 		sys.exit('Directory does not exist')
