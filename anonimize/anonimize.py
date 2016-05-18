@@ -11,7 +11,6 @@ def replacer(match):
 		return s
 
 
-
 def comment_remover(text):
 	pattern = re.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', re.DOTALL | re.MULTILINE)
 	r1 = re.sub(pattern, replacer, text)
