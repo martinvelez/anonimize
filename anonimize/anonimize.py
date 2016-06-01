@@ -33,7 +33,7 @@ def NoComment(infile, outfile):
 		print("File not valid:     ", infile)
 
 
-if __name__ == "__main__": #I'm not 100% sure what this means but apparently this is how you do it
+'''if __name__ == "__main__": #I'm not 100% sure what this means but apparently this is how you do it
 	if len(sys.argv) < 2:
 		print("Oops, forgot to give it a directory name")
 		sys.exit()
@@ -48,4 +48,4 @@ if __name__ == "__main__": #I'm not 100% sure what this means but apparently thi
 				outfile = os.path.join(newdir, fn)
 				NoComment(infile, outfile)
 	else:
-		sys.exit('Directory does not exist')
+		sys.exit('Directory does not exist')'''
