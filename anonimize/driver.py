@@ -1,22 +1,21 @@
-from __future__ import print_function
-import sys, re, os, time
-#import anonimize.anonimize.NoComment
-from anonimize import NoComment
-from datetime import datetime
+import sys
+from anonimize import anonimize
 
-if __name__ == "__main__": #I'm not 100% sure what this means but apparently this is how you do it
-        if len(sys.argv) < 2:
-                print("Oops, forgot to give it a directory name")
-                sys.exit()
-        root = sys.argv[1]
-        if os.path.exists(root):
-                timeStamp =  datetime.fromtimestamp(time.time()).strftime("%m-%d-%y-%H:%M:%S")
-                newdir = root + "_" + timeStamp
-                os.makedirs(newdir)
-                for root, folders, fns in os.walk(root):
-                        for fn in fns:
-                                infile = os.path.join(root, fn)
-                                outfile = os.path.join(newdir, fn)
-                                NoComment(infile, outfile)
+def fatal_syntax_error_message(message):
+    print(message)
+    sys.exit('Use the following syntax: python3 driver.py [-i] target_dir')
+
+if __name__ == "__main__":
+        modify_in_place = False
+        target_dir = ''
+        if len(sys.argv) == 3:
+                if sys.argv[1] == '-i':
+                        modify_in_place = True
+                        target_dir = sys.argv[2]
+                else:
+                        fatal_syntax_error_message("fatal: unrecognized argument: {0}".format(sys.argv[1]))
+        elif len(sys.argv) == 2:
+                target_dir = sys.argv[1]
         else:
-                sys.exit('Directory does not exist')
+                fatal_syntax_error_message('fatal: missing target directory')
+        anonimize(target_dir, modify_in_place)
