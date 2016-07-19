@@ -1,24 +1,20 @@
-#can take a directory and remove all the comments in every file in that directory
-from __future__ import print_function
 import sys, re, os, time
 from datetime import datetime
 
 def replacer(match):
 	s = match.group(0)
 	if s.startswith('/'):
-		return " " # note: a space and not an empty string
+		return " "
 	else:
 		return s
-
 
 def comment_remover(text):
 	pattern = re.compile(r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"', re.DOTALL | re.MULTILINE)
 	r1 = re.sub(pattern, replacer, text)
 	return os.linesep.join([s for s in r1.splitlines() if s.strip()])
 
-
-def NoComment(infile, outfile):
-	root, ext = os.path.splitext(infile) #I also googled this
+def write_anonymized_file(infile, outfile):
+	root, ext = os.path.splitext(infile)
 	valid = [".c", ".h", "Makefile"]
 	if ext.lower() in valid:
 		inf = open(infile, "r")
@@ -32,20 +28,23 @@ def NoComment(infile, outfile):
 	else:
 		print("File not valid:     ", infile)
 
+def make_dir_for_anonymized_files(target_dir):
+	timeStamp =  datetime.fromtimestamp(time.time()).strftime("%m-%d-%y-%H:%M:%S")
+	new_dir = target_dir + "_" + timeStamp
+	os.makedirs(new_dir)
+	return new_dir
 
-'''if __name__ == "__main__": #I'm not 100% sure what this means but apparently this is how you do it
-	if len(sys.argv) < 2:
-		print("Oops, forgot to give it a directory name")
-		sys.exit()
-	root = sys.argv[1]
-	if os.path.exists(root): 
-		timeStamp =  datetime.fromtimestamp(time.time()).strftime("%m-%d-%y-%H:%M:%S")
-		newdir = root + "_" + timeStamp
-		os.makedirs(newdir)
-		for root, folders, fns in os.walk(root):
-			for fn in fns:
-				infile = os.path.join(root, fn)
-				outfile = os.path.join(newdir, fn)
-				NoComment(infile, outfile)
+def anonimize(target_dir, in_place):
+	if os.path.exists(target_dir):
+		new_dir = ''
+		if not in_place:
+			new_dir = make_dir_for_anonymized_files(target_dir)
+		for root, dirs, files in os.walk(target_dir):
+			for file in files:
+				infile = os.path.join(root, file)
+				outfile = os.path.join(new_dir, file)
+				if in_place:
+					outfile = infile
+				write_anonymized_file(infile, outfile)
 	else:
-		sys.exit('Directory does not exist')'''
+		sys.exit("Directory {0} doesn't exist".format(target_dir))
