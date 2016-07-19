@@ -1,11 +1,20 @@
 Anonimize
 ============
 
-We are studying projects submitted by users which may consists identifying
-information like names or usernames.  
+Researchers often study open source repositories or student programming projects
+that may contain personally identifying information. 
+Generally, we do not wish to know or compromise the privacy of individuals so we
+would rather have projects that are anonimized.
+This tools attempts to anonimize projects.
 
-This tools attempts to anonimize files in a project so that it can shared
-internally or externally without compromising the privacy of individuals.
+It does so by reducing projects to the minimal content needed to properly
+compile or interpret a programming project.
+Sometimes, we study thousands of projects so this anonimization also has the
+side benefit of using less disk space.
+
+This is an outline of Our method:
+* Remove comments from all source code files.
+* Remove any file not needed for compilation.
 
 ## Installation
 
@@ -29,9 +38,9 @@ TODO: Write history
 
 ## Credits
 
-Martin Velez
-Sahana Mundewadi
-Andrew Mendoza
+* Martin Velez
+* Sahana Mundewadi
+* Andrew Mendoza
 
 ## License
 
